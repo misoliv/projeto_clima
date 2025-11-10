@@ -1,90 +1,166 @@
+/* ======== Reset ======== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
+/* ======== Fundo ======== */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #6bb6ff, #b3d8ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* ======== Container Principal ======== */
 .container {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  padding: 40px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
 }
 
+/* ======== Título ======== */
 h1 {
-  color: #333;
-  margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #1e3a8a;
+    margin-bottom: 1.5rem;
 }
 
+/* ======== Caixa de busca ======== */
 .search-box {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.2rem;
 }
 
-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 2px solid #ddd;
-  font-size: 16px;
+.search-box input {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 70%;
+    font-size: 0.95rem;
 }
 
-button {
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s;
+.search-box button {
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
 }
 
-button:hover {
-  background: #5a6fd1;
+.search-box button:hover {
+    background-color: #2563eb;
+}
+
+/* ======== Loading e Erros ======== */
+.loading,
+.error {
+    margin-top: 10px;
+    font-size: 0.9rem;
 }
 
 .loading {
-  display: none;
-  color: #667eea;
-  margin: 10px 0;
+    color: #2563eb;
 }
 
 .error {
-  color: #c33;
-  background: #fee;
-  padding: 10px;
-  border-radius: 8px;
-  display: none;
-  margin-bottom: 10px;
+    color: #dc2626;
 }
 
+/* ======== Informações do Clima ======== */
 .weather-info {
-  display: none;
-  color: #333;
+    margin-top: 1.5rem;
+    display: none;
 }
 
-.weather-info h2 {
-  font-size: 1.6em;
-  margin-bottom: 10px;
+.city-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1e3a8a;
 }
 
-.weather-info p {
-  font-size: 1.2em;
-  margin: 5px 0;
+.temperature {
+    font-size: 2.5rem;
+    color: #111;
+    font-weight: bold;
+    margin: 0.5rem 0;
 }
+
+/* ======== Detalhes ======== */
+.weather-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.detail-item {
+    background: #f3f4f6;
+    padding: 0.6rem;
+    border-radius: 8px;
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.detail-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111;
+}
+
+/* ======== Previsão dos Próximos Dias ======== */
+.forecast {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.forecast h2 {
+    font-size: 1.2rem;
+    color: #1e3a8a;
+    margin-bottom: 1rem;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.8rem;
+}
+
+.forecast-day {
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.forecast-day h3 {
+    font-size: 0.9rem;
+    color: #2563eb;
+    margin-bottom: 0.3rem;
+}
+
+.forecast-day p {
+    font-size: 0.85rem;
+    color: #333;
+}
+
+
+
 
 

@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Previsão do Tempo</title>
-  <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsão do Tempo</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <script defer src="./assets/api.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>🌤️ Previsão do Tempo</h1>
+    <div class="container">
+        <h1>🌤️ Previsão do Tempo</h1>
+        
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Digite o nome da cidade..." />
+            <button id="searchBtn">Buscar</button>
+        </div>
 
-    <div class="search-box">
-      <input type="text" id="cityInput" placeholder="Digite o nome da cidade...">
-      <button id="searchBtn">Buscar</button>
+        <div class="loading" id="loading" style="display:none;">Carregando dados...</div>
+        <div class="error" id="error"></div>
+
+        <div class="weather-info" id="weatherInfo" style="display:none;">
+            <div class="current-weather">
+                <div class="city-name" id="cityName"></div>
+                <div class="temperature" id="temperature"></div>
+                
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Sensação Térmica</div>
+                        <div class="detail-value" id="feelsLike"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Umidade</div>
+                        <div class="detail-value" id="humidity"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Vento</div>
+                        <div class="detail-value" id="windSpeed"></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Precipitação</div>
+                        <div class="detail-value" id="precipitation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forecast">
+                <h2>Próximos 7 Dias</h2>
+                <div class="forecast-grid" id="forecastGrid"></div>
+            </div>
+        </div>
     </div>
-
-    <div id="loading" class="loading">Carregando...</div>
-    <div id="error" class="error"></div>
-
-    <div id="weatherInfo" class="weather-info">
-      <h2 id="cityName"></h2>
-      <p id="temperature"></p>
-      <p id="condition"></p>
-    </div>
-  </div>
-
-  <script src="./js/api.js"></script>
 </body>
 </html>
+
 
 
 

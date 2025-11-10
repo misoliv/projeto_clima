@@ -1,88 +1,93 @@
+// Seletores principais
 const searchBtn = document.getElementById("searchBtn");
 const cityInput = document.getElementById("cityInput");
-const loading = document.getElementById("loading");
-const errorMsg = document.getElementById("error");
 const weatherInfo = document.getElementById("weatherInfo");
-const cityName = document.getElementById("cityName");
-const temperature = document.getElementById("temperature");
-const condition = document.getElementById("condition");
+const loading = document.getElementById("loading");
+const error = document.getElementById("error");
 
-// Função principal de busca
+const cityNameEl = document.getElementById("cityName");
+const temperatureEl = document.getElementById("temperature");
+const feelsLikeEl = document.getElementById("feelsLike");
+const humidityEl = document.getElementById("humidity");
+const windSpeedEl = document.getElementById("windSpeed");
+const precipitationEl = document.getElementById("precipitation");
+const forecastGrid = document.getElementById("forecastGrid");
+
+// Função principal
 async function getWeather() {
-  const city = cityInput.value.trim();
-  if (!city) {
-    showError("Por favor, digite o nome de uma cidade.");
-    return;
-  }
-
-  hideError();
-  loading.style.display = "block";
-  weatherInfo.style.display = "none";
-
-  try {
-    // 1️⃣ Obter coordenadas da cidade (API Geocoding)
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=pt&format=json`;
-    const geoResponse = await fetch(geoUrl);
-    const geoData = await geoResponse.json();
-
-    if (!geoData.results || geoData.results.length === 0) {
-      throw new Error("Cidade não encontrada.");
+    const city = cityInput.value.trim();
+    if (!city) {
+        error.textContent = "Por favor, digite o nome de uma cidade.";
+        return;
     }
 
-    const { latitude, longitude, name, country } = geoData.results[0];
+    // Reset
+    weatherInfo.style.display = "none";
+    error.textContent = "";
+    loading.style.display = "block";
 
-    // 2️⃣ Buscar dados do clima
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weathercode&timezone=auto`;
-    const weatherResponse = await fetch(weatherUrl);
-    const weatherData = await weatherResponse.json();
+    try {
+        // 1️⃣ Buscar latitude e longitude da cidade (API de Geocodificação Open-Meteo)
+        const geoRes = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=pt&format=json`
+        );
+        const geoData = await geoRes.json();
 
-    // 3️⃣ Atualizar interface
-    const temp = weatherData.current.temperature_2m;
-    const code = weatherData.current.weathercode;
+        if (!geoData.results || geoData.results.length === 0) {
+            throw new Error("Cidade não encontrada.");
+        }
 
-    cityName.textContent = `${name}, ${country}`;
-    temperature.textContent = `${temp}°C`;
-    condition.textContent = getWeatherDescription(code);
+        const { latitude, longitude, name, country } = geoData.results[0];
 
-    weatherInfo.style.display = "block";
-  } catch (err) {
-    showError(err.message || "Erro ao obter dados do clima.");
-  } finally {
-    loading.style.display = "none";
-  }
+        // 2️⃣ Buscar dados meteorológicos (API de Previsão Open-Meteo)
+        const weatherRes = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`
+        );
+        const weatherData = await weatherRes.json();
+
+        // 3️⃣ Exibir informações atuais
+        const current = weatherData.current;
+        cityNameEl.textContent = `${name}, ${country}`;
+        temperatureEl.textContent = `${current.temperature_2m.toFixed(1)}°C`;
+        feelsLikeEl.textContent = `${current.apparent_temperature.toFixed(1)}°C`;
+        humidityEl.textContent = `${current.relative_humidity_2m}%`;
+        windSpeedEl.textContent = `${current.wind_speed_10m.toFixed(1)} km/h`;
+        precipitationEl.textContent = `${current.precipitation.toFixed(1)} mm`;
+
+        // 4️⃣ Montar previsão de 7 dias
+        const days = weatherData.daily.time;
+        const maxTemp = weatherData.daily.temperature_2m_max;
+        const minTemp = weatherData.daily.temperature_2m_min;
+
+        forecastGrid.innerHTML = "";
+        days.forEach((day, i) => {
+            const date = new Date(day);
+            const options = { weekday: "short", day: "2-digit", month: "2-digit" };
+            const formatted = date.toLocaleDateString("pt-BR", options);
+
+            const card = document.createElement("div");
+            card.classList.add("forecast-day");
+            card.innerHTML = `
+                <h3>${formatted}</h3>
+                <p>🌡️ ${minTemp[i].toFixed(1)}°C - ${maxTemp[i].toFixed(1)}°C</p>
+            `;
+            forecastGrid.appendChild(card);
+        });
+
+        // Exibir na tela
+        loading.style.display = "none";
+        weatherInfo.style.display = "block";
+    } catch (err) {
+        loading.style.display = "none";
+        error.textContent = err.message || "Erro ao buscar dados do clima.";
+    }
 }
 
-// Descrição simples do código meteorológico
-function getWeatherDescription(code) {
-  const descriptions = {
-    0: "Céu limpo ☀️",
-    1: "Parcialmente nublado 🌤️",
-    2: "Nublado ⛅",
-    3: "Nuvens densas ☁️",
-    45: "Neblina 🌫️",
-    48: "Nevoeiro 🌫️",
-    51: "Garoa 💧",
-    61: "Chuva leve 🌦️",
-    63: "Chuva moderada 🌧️",
-    65: "Chuva forte ⛈️",
-  };
-  return descriptions[code] || "Condição desconhecida";
-}
-
-// Funções de erro
-function showError(message) {
-  errorMsg.textContent = message;
-  errorMsg.style.display = "block";
-}
-
-function hideError() {
-  errorMsg.style.display = "none";
-}
-
-// Eventos
+// Evento do botão
 searchBtn.addEventListener("click", getWeather);
-cityInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") getWeather();
-});
 
+// Pressionar Enter também busca
+cityInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") getWeather();
+});
 
