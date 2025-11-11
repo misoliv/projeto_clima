@@ -1,4 +1,5 @@
-import { getWeatherByCity } from "./api.js"; // ✅ import válido no navegador com type="module"
+// assets/main.js
+import { getWeatherByCity } from "./api.js";
 
 const searchBtn = document.getElementById("searchBtn");
 const cityInput = document.getElementById("cityInput");
@@ -28,27 +29,42 @@ async function handleSearch() {
   try {
     const data = await getWeatherByCity(city);
 
-    const current = data.current;
-    cityNameEl.textContent = data.city;
-    temperatureEl.textContent = `${current.temperature_2m.toFixed(1)}°C`;
-    feelsLikeEl.textContent = `${current.apparent_temperature.toFixed(1)}°C`;
-    humidityEl.textContent = `${current.relative_humidity_2m}%`;
-    windSpeedEl.textContent = `${current.wind_speed_10m.toFixed(1)} km/h`;
-    precipitationEl.textContent = `${current.precipitation.toFixed(1)} mm`;
+    const current = data.current || {};
 
-    // Previsão
+    cityNameEl.textContent = data.city;
+    temperatureEl.textContent = current.temperature_2m
+      ? `${current.temperature_2m.toFixed(1)}°C`
+      : "N/A";
+    feelsLikeEl.textContent = current.apparent_temperature
+      ? `${current.apparent_temperature.toFixed(1)}°C`
+      : "N/A";
+    humidityEl.textContent = current.relative_humidity_2m
+      ? `${current.relative_humidity_2m}%`
+      : "N/A";
+    windSpeedEl.textContent = current.wind_speed_10m
+      ? `${current.wind_speed_10m.toFixed(1)} km/h`
+      : "N/A";
+    precipitationEl.textContent = current.precipitation
+      ? `${current.precipitation.toFixed(1)} mm`
+      : "N/A";
+
+    // Previsão de 7 dias
     forecastGrid.innerHTML = "";
-    const days = data.daily.time;
-    const maxTemp = data.daily.temperature_2m_max;
-    const minTemp = data.daily.temperature_2m_min;
+    const days = data.daily.time || [];
+    const maxTemp = data.daily.temperature_2m_max || [];
+    const minTemp = data.daily.temperature_2m_min || [];
 
     days.forEach((day, i) => {
       const date = new Date(day);
-      const formatted = date.toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" });
+      const formatted = date.toLocaleDateString("pt-BR", {
+        weekday: "short",
+        day: "2-digit",
+        month: "2-digit",
+      });
 
       const card = document.createElement("div");
       card.classList.add("forecast-day");
-      card.innerHTML = `<h3>${formatted}</h3><p>🌡️ ${minTemp[i].toFixed(1)}°C - ${maxTemp[i].toFixed(1)}°C</p>`;
+      card.innerHTML = `<h3>${formatted}</h3><p>🌡️ ${minTemp[i]?.toFixed(1) || "N/A"}°C - ${maxTemp[i]?.toFixed(1) || "N/A"}°C</p>`;
       forecastGrid.appendChild(card);
     });
 
@@ -61,5 +77,8 @@ async function handleSearch() {
 }
 
 searchBtn.addEventListener("click", handleSearch);
-cityInput.addEventListener("keypress", e => { if(e.key === "Enter") handleSearch(); });
+cityInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") handleSearch();
+});
+
 
