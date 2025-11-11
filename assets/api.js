@@ -1,47 +1,38 @@
 /**
- * Busca os dados meteorológicos de uma cidade usando a API Open-Meteo.
- *
- * A função realiza duas chamadas de API:
- * 1. Geocodificação: obtém latitude e longitude da cidade.
- * 2. Previsão do tempo: obtém dados horários e diários do clima.
- * 
- * Retorna os dados atuais do clima com base no horário mais próximo do momento da requisição,
- * e a previsão diária para os próximos dias.
+ * Busca informações meteorológicas atuais e previsão de 7 dias para uma cidade usando a API Open-Meteo.
  *
  * @async
  * @function getWeatherByCity
- * @param {string} city - Nome da cidade a ser consultada. Ex.: "São Paulo".
- * @throws {Error} Lança erro se:
- *   - O parâmetro `city` for vazio ou não for string.
- *   - A cidade não for encontrada.
- *   - Os dados meteorológicos não estiverem disponíveis.
+ * @param {string} city - Nome da cidade a ser consultada. Deve ser uma string não vazia.
+ *
  * @returns {Promise<Object>} Um objeto contendo:
- *   - city {string}: Nome da cidade e país, ex.: "São Paulo, Brasil".
- *   - current {Object}: Dados do clima atual:
- *       - temperature_2m {number}: Temperatura atual em °C.
- *       - apparent_temperature {number}: Sensação térmica em °C.
- *       - relative_humidity_2m {number}: Umidade relativa em %.
- *       - wind_speed_10m {number}: Velocidade do vento em km/h.
- *       - precipitation {number}: Precipitação em mm.
- *   - daily {Object}: Previsão diária com arrays de:
- *       - temperature_2m_max {number[]}: Temperaturas máximas.
- *       - temperature_2m_min {number[]}: Temperaturas mínimas.
- *       - time {string[]}: Datas correspondentes.
+ * - {string} city - Nome da cidade e país.
+ * - {Object} current - Dados atuais do clima, incluindo:
+ *   - {number} temperature_2m - Temperatura atual em graus Celsius.
+ *   - {number} apparent_temperature - Sensação térmica em graus Celsius.
+ *   - {number} relative_humidity_2m - Umidade relativa do ar (%).
+ *   - {number} wind_speed_10m - Velocidade do vento (km/h).
+ *   - {number} precipitation - Quantidade de precipitação (mm).
+ * - {Object} daily - Dados da previsão para os próximos dias (temperatura máxima e mínima, tempo, etc.).
+ *
+ * @throws {Error} Se o parâmetro `city` for inválido, se a cidade não for encontrada
+ * ou se ocorrer um erro ao buscar os dados das APIs.
  *
  * @example
- * import { getWeatherByCity } from './api.js';
- * 
- * async function mostrarClima() {
+ * // Exemplo de uso:
+ * import { getWeatherByCity } from "./api.js";
+ *
+ * (async () => {
  *   try {
- *     const dados = await getWeatherByCity("São Paulo");
- *     console.log(dados.city); // "São Paulo, Brasil"
- *     console.log(dados.current.temperature_2m); // 25.3
- *     console.log(dados.daily.temperature_2m_max); // [28, 27, 26, ...]
- *   } catch (err) {
- *     console.error(err.message);
+ *     const weatherData = await getWeatherByCity("São Paulo");
+ *     console.log(weatherData.city); // "São Paulo, Brazil"
+ *     console.log(weatherData.current.temperature_2m); // 25.3
+ *   } catch (error) {
+ *     console.error("Erro:", error.message);
  *   }
- * }
+ * })();
  */
+
 export async function getWeatherByCity(city) {
   if (!city || typeof city !== "string") {
     throw new Error("Por favor, digite o nome de uma cidade.");
