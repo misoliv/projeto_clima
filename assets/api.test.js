@@ -1,0 +1,45 @@
+const { getWeatherByCity } = require("./api");
+
+global.fetch = jest.fn();
+
+describe("getWeatherByCity", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("deve lançar erro se a cidade estiver vazia", async () => {
+    await expect(getWeatherByCity("")).rejects.toThrow("Por favor, digite o nome de uma cidade.");
+  });
+
+  it("deve lançar erro se a cidade não for encontrada", async () => {
+    fetch.mockResolvedValueOnce({ json: async () => ({ results: [] }) });
+    await expect(getWeatherByCity("Atlantis")).rejects.toThrow("Cidade não encontrada.");
+  });
+
+  it("deve retornar dados válidos de clima para cidade existente", async () => {
+    fetch
+      .mockResolvedValueOnce({
+        json: async () => ({
+          results: [{ latitude: -23.5, longitude: -46.6, name: "São Paulo", country: "Brasil" }],
+        }),
+      })
+      .mockResolvedValueOnce({
+        json: async () => ({
+          current: { temperature_2m: 25 },
+          daily: { temperature_2m_max: [28], temperature_2m_min: [18] },
+        }),
+      });
+
+    const result = await getWeatherByCity("São Paulo");
+
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(result.city).toBe("São Paulo, Brasil");
+    expect(result.current.temperature_2m).toBe(25);
+  });
+
+  it("deve tratar erro de rede", async () => {
+    fetch.mockRejectedValueOnce(new Error("Erro na rede"));
+    await expect(getWeatherByCity("Rio")).rejects.toThrow("Erro na rede");
+  });
+});
+
