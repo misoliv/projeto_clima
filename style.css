@@ -1,143 +1,249 @@
-/* Reset */
+/* ===============================
+   RESET E CONFIGURAÇÕES GERAIS
+=============================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* Fundo azul degradê em toda a tela */
-body, html {
+html, body {
   height: 100%;
 }
 
+/* Fundo muda conforme horário (via JS adiciona .day ou .night no <body>) */
 body {
-  background: linear-gradient(to bottom, #78c0f8, #cce7ff);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.4s ease;
+  padding: 2rem;
+  background: linear-gradient(180deg, #e3f2fd, #bbdefb);
 }
 
-/* Container principal centralizado */
+body.night {
+  background: linear-gradient(180deg, #0d1b2a, #1b263b);
+}
+
+/* ===============================
+   CONTAINER PRINCIPAL
+=============================== */
 .container {
+  width: 100%;
+  max-width: 900px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
 }
 
-/* Card principal */
+/* ===============================
+   CARD PRINCIPAL (elemento #card-root)
+   - este elemento contém a página inicial (form)
+     e, quando houver resultado, conterá .weather-card
+=============================== */
 .card {
-  background-color: #fff;
-  padding: 2.5rem 2rem;
-  border-radius: 15px;
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 90%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 520px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(11, 35, 70, 0.12);
+  padding: 2rem;
+  transition: all 0.3s ease;
+  /* Tornar o card um flex container para centralizar o conteúdo interno,
+     tanto o formulário quanto o .weather-card de resultado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* centraliza horizontalmente */
+  justify-content: center;/* centraliza verticalmente do conteúdo interno */
 }
 
-/* Título */
+/* Título (aparece na página inicial) */
 .card h1 {
-  color: #1b4b91;
+  color: #12386a;
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Formulário */
+/* ===============================
+   FORMULÁRIO INICIAL
+   - Mantemos o formulário em largura total dentro do card,
+     de modo que não quebre o alinhamento central.
+=============================== */
 form {
+  width: 100%;
   display: flex;
+  gap: 0.6rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
 }
 
-/* Campo de entrada */
-input {
+form.column {
+  flex-direction: column;
+}
+
+input[type="text"] {
   flex: 1;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #d6dfe9;
+  font-size: 1rem;
   outline: none;
+  min-width: 0; /* evita overflow em flex containers */
 }
 
-input:focus {
+input[type="text"]:focus {
   border-color: #1b4b91;
+  box-shadow: 0 0 0 3px rgba(27,75,145,0.06);
 }
 
-/* Botão */
 button {
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1.2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: #1b4b91;
-  color: white;
-  font-weight: 500;
+  color: #fff;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.2s ease;
 }
 
 button:hover {
-  background-color: #2a63c3;
+  background-color: #12305a;
 }
 
 /* Mensagem de status/erro */
-#message {
+#message, .error {
   margin-top: 1rem;
-  color: #d9534f;
   font-size: 0.95rem;
-}
-
-/* ======== CARD DE RESULTADO ======== */
-.weather-card {
-  background: white;
-  border-radius: 15px;
+  color: #c62828;
   text-align: center;
-  padding: 2rem;
-  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* ===============================
+   CARD DE RESULTADO (.weather-card)
+   - Este elemento fica dentro do .card (ou #card-root)
+   - O .card já é flex com align-items:center, portanto
+     .weather-card fica automaticamente centralizado.
+=============================== */
+.weather-card {
+  width: 320px;               /* largura do box interno */
+  max-width: calc(100% - 40px);
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.4rem 1.2rem;
+  box-shadow: 0 8px 30px rgba(11, 35, 70, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* centraliza todo conteúdo interno */
+  justify-content: center;
+}
+
+/* ===============================
+   BOX INTERNO (temperatura + ícone)
+   - Centralizado dentro do .weather-card
+=============================== */
 .weather-temp-box {
-  background: #e9f2fa;
-  border-radius: 10px;
-  padding: 1rem 0;
-  margin-bottom: 1rem;
-}
-
-.weather-temp {
-  font-size: 2.8rem;
-  font-weight: bold;
-  color: #1b4b91;
-}
-
-.weather-city {
-  color: #1b4b91;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  width: 95%;
+  background: #eaf2fb;
+  border-radius: 12px;
+  padding: 1.6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* garante que ícone e temp fiquem centralizados */
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .weather-icon {
-  font-size: 1.2rem;
-  background: #1b4b91;
-  color: white;
-  border-radius: 8px;
-  display: inline-block;
-  padding: 0.4rem 0.6rem;
+  font-size: 2.6rem;
+  color: #1b4b91;
+  margin-bottom: 0.6rem;
+  line-height: 1;
 }
 
-/* Responsividade */
-@media (max-width: 480px) {
+.weather-temp {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #1b4b91;
+  line-height: 1;
+}
+
+/* ===============================
+   INFORMAÇÕES: cidade, descrição, data
+=============================== */
+.weather-city {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #12386a;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.weather-desc {
+  font-size: 0.95rem;
+  color: #59769b;
+  font-style: italic;
+  margin-bottom: 0.9rem;
+  text-align: center;
+}
+
+.weather-date {
+  font-size: 0.9rem;
+  color: #8a9cb5;
+  text-align: center;
+}
+
+/* ===============================
+   TEMA NOTURNO (opcional)
+=============================== */
+body.night .card {
+  background-color: rgba(255,255,255,0.04); /* leve transparência sobre fundo escuro */
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+body.night .weather-temp-box {
+  background: rgba(250,250,255,0.06);
+}
+
+body.night .weather-temp,
+body.night .weather-icon,
+body.night .weather-city {
+  color: #eaf2fb;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+=============================== */
+@media (max-width: 420px) {
+  .card {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+  .weather-card {
+    width: 100%;
+    padding: 1rem;
+  }
+  .weather-temp {
+    font-size: 2.2rem;
+  }
+  .weather-icon {
+    font-size: 2.1rem;
+  }
   form {
     flex-direction: column;
+  }
+  input[type="text"] {
+    width: 100%;
   }
   button {
     width: 100%;
   }
 }
+
+
 
 
 
