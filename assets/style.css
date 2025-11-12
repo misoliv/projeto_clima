@@ -1,164 +1,70 @@
-/* ======== Reset ======== */
+/* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ======== Fundo ======== */
 body {
-    height: 100vh;
-    background: linear-gradient(to bottom, #6bb6ff, #b3d8ff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
-/* ======== Container Principal ======== */
 .container {
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
 }
 
-/* ======== Título ======== */
 h1 {
-    font-size: 1.8rem;
-    color: #1e3a8a;
-    margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-/* ======== Caixa de busca ======== */
-.search-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1.2rem;
+form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.search-box input {
-    padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 70%;
-    font-size: 0.95rem;
+input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
 }
 
-.search-box button {
-    background-color: #3b82f6;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 0.6rem 1rem;
-    cursor: pointer;
-    transition: 0.3s ease;
+button {
+  padding: 0.5rem 1rem;
+  background-color: #4facfe;
+  border: none;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.search-box button:hover {
-    background-color: #2563eb;
+button:hover {
+  background-color: #00c6fb;
 }
 
-/* ======== Loading e Erros ======== */
-.loading,
-.error {
-    margin-top: 10px;
-    font-size: 0.9rem;
+#weather-result {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  min-height: 40px;
 }
 
-.loading {
-    color: #2563eb;
-}
 
-.error {
-    color: #dc2626;
-}
 
-/* ======== Informações do Clima ======== */
-.weather-info {
-    margin-top: 1.5rem;
-    display: none;
-}
 
-.city-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #1e3a8a;
-}
-
-.temperature {
-    font-size: 2.5rem;
-    color: #111;
-    font-weight: bold;
-    margin: 0.5rem 0;
-}
-
-/* ======== Detalhes ======== */
-.weather-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-top: 1rem;
-    text-align: left;
-}
-
-.detail-item {
-    background: #f3f4f6;
-    padding: 0.6rem;
-    border-radius: 8px;
-}
-
-.detail-label {
-    font-size: 0.8rem;
-    color: #555;
-}
-
-.detail-value {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #111;
-}
-
-/* ======== Previsão dos Próximos Dias ======== */
-.forecast {
-    margin-top: 2rem;
-    text-align: left;
-}
-
-.forecast h2 {
-    font-size: 1.2rem;
-    color: #1e3a8a;
-    margin-bottom: 1rem;
-}
-
-.forecast-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 0.8rem;
-}
-
-.forecast-day {
-    background: #f3f4f6;
-    border-radius: 8px;
-    padding: 0.8rem;
-    text-align: center;
-}
-
-.forecast-day h3 {
-    font-size: 0.9rem;
-    color: #2563eb;
-    margin-bottom: 0.3rem;
-}
-
-.forecast-day p {
-    font-size: 0.85rem;
-    color: #333;
-}
 
 
 
