@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Previsão do Tempo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Previsão do Tempo</h1>
-    
-    <form id="weather-form">
-      <input 
-        type="text" 
-        id="city-input" 
-        placeholder="Digite o nome da cidade" 
-        required
-      />
-      <button type="submit">Buscar</button>
-    </form>
-
-    <div id="weather-result"></div>
+    <div class="card" id="card-root">
+      <h1>Previsão do Tempo</h1>
+      <form id="weather-form">
+        <input
+          id="city-input"
+          type="text"
+          placeholder="Digite o nome da cidade"
+          required
+        />
+        <button type="submit">Buscar</button>
+      </form>
+      <p id="message"></p>
+    </div>
   </div>
 
   <script src="api.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 

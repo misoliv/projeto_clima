@@ -1,0 +1,157 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Fundo azul degradê em toda a tela */
+body, html {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(to bottom, #78c0f8, #cce7ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container principal centralizado */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* Card principal */
+.card {
+  background-color: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+/* Título */
+.card h1 {
+  color: #1b4b91;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Campo de entrada */
+input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+input:focus {
+  border-color: #1b4b91;
+}
+
+/* Botão */
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #1b4b91;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #2a63c3;
+}
+
+/* Mensagem de status/erro */
+#message {
+  margin-top: 1rem;
+  color: #d9534f;
+  font-size: 0.95rem;
+}
+
+/* ======== CARD DE RESULTADO ======== */
+.weather-card {
+  background: white;
+  border-radius: 15px;
+  text-align: center;
+  padding: 2rem;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.weather-temp-box {
+  background: #e9f2fa;
+  border-radius: 10px;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+}
+
+.weather-temp {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #1b4b91;
+}
+
+.weather-city {
+  color: #1b4b91;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.weather-icon {
+  font-size: 1.2rem;
+  background: #1b4b91;
+  color: white;
+  border-radius: 8px;
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  form {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
