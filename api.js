@@ -1,9 +1,17 @@
-const form = document.getElementById("weather-form");
-const cityInput = document.getElementById("city-input");
-const cardRoot = document.getElementById("card-root");
-const messageEl = document.getElementById("message");
+/**
+ * @fileoverview Funções auxiliares para exibir previsão do tempo,
+ * buscar dados meteorológicos e atualizar o DOM.
+ */
 
-// Função auxiliar: formata data e hora completas
+/**
+ * Formata a data e hora atuais no padrão brasileiro.
+ *
+ * @returns {string} Data e hora formatadas, ex: "terça-feira, 12 de novembro de 2025 14:30".
+ *
+ * @example
+ * const dataHora = formatarDataHora();
+ * console.log(dataHora); // "terça-feira, 12 de novembro de 2025 14:30"
+ */
 function formatarDataHora() {
   const agora = new Date();
   return agora.toLocaleString("pt-BR", {
@@ -16,10 +24,19 @@ function formatarDataHora() {
   });
 }
 
-// Função auxiliar: define ícone de clima de acordo com o código da API
+/**
+ * Retorna a classe de ícone correspondente ao código do clima.
+ *
+ * @param {number} weatherCode Código do clima fornecido pela API Open-Meteo.
+ * @returns {string} Nome da classe do ícone CSS.
+ *
+ * @example
+ * const icon = getWeatherIcon(0);
+ * console.log(icon); // "wi-day-sunny"
+ */
 function getWeatherIcon(weatherCode) {
   const icons = {
-    0: "wi-day-sunny", // céu limpo
+    0: "wi-day-sunny",
     1: "wi-day-sunny-overcast",
     2: "wi-day-cloudy",
     3: "wi-cloudy",
@@ -34,7 +51,16 @@ function getWeatherIcon(weatherCode) {
   return icons[weatherCode] || "wi-na";
 }
 
-// Função auxiliar: muda cor do fundo conforme horário
+/**
+ * Aplica tema de cores no background da página de acordo com o horário.
+ * - Manhã e tarde: azul claro
+ * - Noite: azul escuro
+ *
+ * @returns {void}
+ *
+ * @example
+ * aplicarTemaPorHorario();
+ */
 function aplicarTemaPorHorario() {
   const hora = new Date().getHours();
   if (hora >= 6 && hora < 18) {
@@ -44,6 +70,22 @@ function aplicarTemaPorHorario() {
   }
 }
 
+/**
+ * Listener para envio do formulário de busca de cidade.
+ * Busca coordenadas e clima via API, renderizando resultado no DOM.
+ *
+ * @async
+ * @param {Event} event Evento de submit do formulário.
+ * @throws {Error} Se o campo cidade estiver vazio.
+ * @throws {Error} Se a cidade não for encontrada.
+ * @throws {Error} Se houver falha na API de geocodificação ou meteorologia.
+ *
+ * @example
+ * form.addEventListener("submit", async (event) => {
+ *   event.preventDefault();
+ *   await buscarClima(event);
+ * });
+ */
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const city = cityInput.value.trim();
@@ -55,11 +97,10 @@ form.addEventListener("submit", async (event) => {
   }
 
   messageEl.style.color = "#1b4b91";
-    messageEl.textContent = "Buscando dados...";
+  messageEl.textContent = "Buscando dados...";
   aplicarTemaPorHorario();
 
   try {
-    // 1️⃣ Buscar coordenadas
     const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
       city
     )}&count=1&language=pt&format=json`;
@@ -74,7 +115,6 @@ form.addEventListener("submit", async (event) => {
 
     const { latitude, longitude, name, country } = geoData.results[0];
 
-    // 2️⃣ Buscar dados meteorológicos
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
     const weatherResp = await fetch(weatherUrl);
     if (!weatherResp.ok) throw new Error("Falha ao buscar dados meteorológicos.");
@@ -84,9 +124,8 @@ form.addEventListener("submit", async (event) => {
       throw new Error("Dados de clima indisponíveis para essa localização.");
     }
 
-    const { temperature, weathercode, time } = weatherData.current_weather;
+    const { temperature, weathercode } = weatherData.current_weather;
 
-    // 3️⃣ Ícone e descrição do clima
     const iconClass = getWeatherIcon(weathercode);
     const descricao = {
       0: "Céu limpo",
@@ -102,10 +141,8 @@ form.addEventListener("submit", async (event) => {
       99: "Chuva forte com trovões",
     }[weathercode] || "Condição desconhecida";
 
-    // 4️⃣ Data e hora formatadas
     const dataHora = formatarDataHora();
 
-    // 5️⃣ Renderizar resultado no card
     cardRoot.innerHTML = `
       <div class="weather-card">
         <div class="weather-temp-box">
@@ -122,6 +159,8 @@ form.addEventListener("submit", async (event) => {
     messageEl.textContent = error.message || "Erro desconhecido. Verifique sua conexão.";
   }
 });
+
+
 
 
 
