@@ -1,9 +1,5 @@
-// tests/api.test.js
-
-// Mock global do fetch
 global.fetch = jest.fn();
 
-// Função simulada para testes (mesma lógica do api.js)
 async function obterClima(city) {
   if (!city || !city.trim()) throw new Error("Por favor, digite o nome de uma cidade.");
 
@@ -13,19 +9,18 @@ async function obterClima(city) {
     )}&count=1&language=pt&format=json`
   );
   if (!geoResp.ok) throw new Error("Falha na API de geocodificação.");
-
   const geoData = await geoResp.json();
-  if (!geoData.results || geoData.results.length === 0) throw new Error("Cidade não encontrada");
+  if (!geoData.results || geoData.results.length === 0)
+    throw new Error("Cidade não encontrada");
 
   const { latitude, longitude, name, country } = geoData.results[0];
 
   const weatherResp = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,precipitation,windspeed_10m,weathercode&timezone=auto`
   );
   if (!weatherResp.ok) throw new Error("Falha ao buscar dados meteorológicos.");
-
   const weatherData = await weatherResp.json();
-  if (!weatherData.current_weather)
+  if (!weatherData.current)
     throw new Error("Dados de clima indisponíveis para essa localização.");
 
   return { name, country, ...weatherData };
@@ -35,14 +30,21 @@ describe("API de clima", () => {
   beforeEach(() => jest.clearAllMocks());
 
   const cidadeValida = { latitude: -23.55, longitude: -46.63, name: "São Paulo", country: "BR" };
-  const climaValido = { temperature: 25, weathercode: 1, time: "2025-11-12T12:00" };
+  const climaValido = {
+    temperature_2m: 25,
+    weathercode: 1,
+    relative_humidity_2m: 70,
+    precipitation: 1.2,
+    windspeed_10m: 10,
+    time: "2025-11-12T12:00",
+  };
 
   const mockGeoResponse = (results) =>
     Promise.resolve({ ok: true, json: async () => ({ results }) });
-  const mockWeatherResponse = (current_weather) =>
-    Promise.resolve({ ok: true, json: async () => ({ current_weather }) });
+  const mockWeatherResponse = (current) =>
+    Promise.resolve({ ok: true, json: async () => ({ current }) });
 
-  test("Cidade válida retorna dados meteorológicos", async () => {
+  test("Cidade válida retorna dados meteorológicos completos", async () => {
     fetch
       .mockResolvedValueOnce(mockGeoResponse([cidadeValida]))
       .mockResolvedValueOnce(mockWeatherResponse(climaValido));
@@ -51,7 +53,10 @@ describe("API de clima", () => {
 
     expect(dados.name).toBe("São Paulo");
     expect(dados.country).toBe("BR");
-    expect(dados.current_weather.temperature).toBe(25);
+    expect(dados.current.temperature_2m).toBe(25);
+    expect(dados.current.relative_humidity_2m).toBe(70);
+    expect(dados.current.precipitation).toBe(1.2);
+    expect(dados.current.windspeed_10m).toBe(10);
   });
 
   test("Cidade inexistente lança exceção", async () => {
@@ -84,6 +89,9 @@ describe("API de clima", () => {
     );
   });
 });
+
+
+
 
 
 
