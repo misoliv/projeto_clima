@@ -4,22 +4,25 @@
 body {
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to bottom, #78c0f8, #cce7ff);
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   transition: background 0.5s ease;
 }
 
 .container {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .card {
-  background: #fff; /* fundo final branco */
+  background: #fff;
   border-radius: 20px;
   padding: 2rem;
   width: 340px;
@@ -154,6 +157,49 @@ p#message {
   color: #1b4b91;
 }
 
+/* ===============================
+   RODAPÉ FIXO AO FINAL
+=============================== */
+footer.site-license {
+  width: 100%;
+  text-align: center;
+  color: #2f4b78;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 15px 10px 25px;
+}
+
+footer.site-license p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px 0;
+  flex-wrap: wrap;
+}
+
+footer.site-license a {
+  color: #1b4b91;
+  text-decoration: underline;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+=============================== */
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+  }
+
+  footer.site-license {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+}
+
+/* ===============================
+   ANIMAÇÃO
+=============================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -164,24 +210,5 @@ p#message {
     transform: translateY(0);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
